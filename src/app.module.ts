@@ -3,7 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BotModule } from './bot/bot.module';
 import { ConfigModule } from '@nestjs/config';
-
+import { UserService } from './user/user.service';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
   imports: [
@@ -14,6 +15,10 @@ import { ConfigModule } from '@nestjs/config';
     BotModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    UserService,
+    PrismaService,
+  ],
 })
 export class AppModule {}

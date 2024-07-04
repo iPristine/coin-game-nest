@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from "@nestjs/config";
-import { Context, Markup, Telegraf } from "telegraf";
-
-
+import { ConfigService } from '@nestjs/config';
+import { Context, Markup, Telegraf } from 'telegraf';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class BotService {
   private readonly bot: Telegraf;
 
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService,
+    private userService: UserService,
+  ) {
     const botToken = this.configService.get<string>('TG_BOT_TOKEN');
     this.bot = new Telegraf(botToken);
 
@@ -25,26 +27,39 @@ export class BotService {
     this.bot.help(this.helpCommand);
   }
 
-  private startCommand(ctx: Context) {
+  private startCommand = async (ctx: Context) =>  {
+    const tgUser = ctx.from;
+    const user = await this.userService.user({ telegramId: tgUser.id });
+
+    if (!user) {
+      await this.userService.createUser({
+        telegramId: tgUser.id,
+        name: tgUser.first_name,
+        username: tgUser.username,
+        email: tgUser.username + '@telegram.com',
+      });
+    }
+
     return ctx.reply(
       'Привет! 👋 Добро пожаловать в нашего бота. Здесь ты можешь получать токеныб зарабатывать монеты и многое другое! Нажми на кнопку меню, чтобы узнать, что я могу. Если тебе нужна помощь, напиши /help.\n',
       Markup.inlineKeyboard([
-        Markup.button.webApp('Play', 'https://coingame.onrender.com')
-      ])
+        Markup.button.webApp('Play', 'https://coingame.onrender.com'),
+      ]),
     );
   }
 
   private helpCommand(ctx: Context) {
-    const user = ctx.from
+    const user = ctx.from;
 
-    ctx.reply('Вот что я могу делать для тебя:\n' +
-      '👉 /start - Перезапустить и увидеть приветственное сообщение\n' +
-      '👉 /play - Начать игру или активность\n' +
-      '👉 /settings - Настроить свои предпочтения\n' +
-      '👉 /info - Получить информацию о сервисе\n' +
-      'Если тебе нужна дополнительная помощь или у тебя есть вопросы, не стесняйся спрашивать!');
+    ctx.reply(
+      'Вот что я могу делать для тебя:\n' +
+        '👉 /start - Перезапустить и увидеть приветственное сообщение\n' +
+        '👉 /play - Начать игру или активность\n' +
+        '👉 /settings - Настроить свои предпочтения\n' +
+        '👉 /info - Получить информацию о сервисе\n' +
+        'Если тебе нужна дополнительная помощь или у тебя есть вопросы, не стесняйся спрашивать!',
+    );
   }
-
 
   // private initializeMessageHandling(): void {
   //   // Обработчик команды /start
