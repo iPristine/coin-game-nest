@@ -72,6 +72,7 @@ export class AppController {
   }
 
   @Get('/upgrades/:id')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getUpgrade(@Param('id') id: string): Promise<any> {
     return null;
   }
