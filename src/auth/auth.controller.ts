@@ -28,7 +28,6 @@ export class AuthController {
     required: true,
   })
   async telegramAuth(@Query() query: TelegramAuthQuery) {
-
     const { hash, ...data } = query;
     const token = process.env.TG_BOT_TOKEN;
 
@@ -46,7 +45,7 @@ export class AuthController {
       throw new Error('Invalid data received from Telegram');
     }
 
-    const tgUser = {...data, id: +data.id}
+    const tgUser = { ...data, id: +data.id };
 
     const user = await this.userService.findOrCreateUser(tgUser);
 
