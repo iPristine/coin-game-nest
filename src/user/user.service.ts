@@ -65,6 +65,7 @@ export class UserService {
     let user = await this.prisma.user.findUnique({
       where: { telegramId: data.id },
     });
+    console.log(user);
 
     if (!user) {
       user = await this.prisma.user.create({

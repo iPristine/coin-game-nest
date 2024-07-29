@@ -27,8 +27,7 @@ export class AuthController {
     description: 'Telegram authentication query parameters',
     required: true,
   })
-  async telegramAuth(@Query('query') query: TelegramAuthQuery) {
-    console.log(query);
+  async telegramAuth(@Query() query: TelegramAuthQuery) {
 
     const { hash, ...data } = query;
     const token = process.env.TG_BOT_TOKEN;
@@ -47,7 +46,9 @@ export class AuthController {
       throw new Error('Invalid data received from Telegram');
     }
 
-    const user = await this.userService.findOrCreateUser(data);
+    const tgUser = {...data, id: +data.id}
+
+    const user = await this.userService.findOrCreateUser(tgUser);
 
     const jwtToken = this.authService.generateToken(user);
 
@@ -58,7 +59,6 @@ export class AuthController {
   handleTelegramCallback(@Query() query, @Res() res: Response) {
     if (this.validateTelegramAuth(query)) {
       // Аутентификация прошла успешно
-      console.log('Authenticated user:', query);
       res.redirect('/success');
     } else {
       // Ошибка аутентификации

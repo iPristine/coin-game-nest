@@ -12,15 +12,15 @@ export class TelegramAuthQuery {
 
   @ApiProperty({
     description: 'Additional data from Telegram',
-    example: '{}',
+    example: '123456',
     required: false,
   })
-  @IsNumber()
-  id: number;
+  @IsString()
+  id: string;
 
   @ApiProperty({
     description: 'Additional data from Telegram',
-    example: '{}',
+    example: 'testuser',
     required: false,
   })
   @IsOptional()
@@ -29,7 +29,7 @@ export class TelegramAuthQuery {
 
   @ApiProperty({
     description: 'Additional data from Telegram',
-    example: '{}',
+    example: 'Test',
     required: false,
   })
   @IsString()
@@ -37,19 +37,28 @@ export class TelegramAuthQuery {
 
   @ApiProperty({
     description: 'Additional data from Telegram',
-    example: '{}',
+    example: 'User',
     required: false,
   })
   @IsOptional()
-  @IsNumber()
+  @IsString()
   last_name?: string;
 
   @ApiProperty({
     description: 'Additional data from Telegram',
-    example: '{}',
+    example: 'https://example.com/photo.jpg',
     required: false,
   })
   @IsOptional()
   @IsString()
   photo_url?: string;
+
+  @ApiProperty({
+    description: 'Additional data from Telegram',
+    example: '1621341234',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  auth_date?: string;
 }
