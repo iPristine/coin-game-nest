@@ -14,9 +14,10 @@ datasource db {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  telegramId Int @unique
-  name  String?
-  username String?
+  id          Int    @id @default(autoincrement())
+  telegramId  Int @unique
+  username    String
+  firstName   String?
+  lastName    String?
+  photoUrl    String?
 }

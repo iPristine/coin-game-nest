@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Context, Markup, Telegraf } from 'telegraf';
 import { UserService } from '../user/user.service';
+import { TgUserEntity } from "../auth/tg-user.entity";
 
 @Injectable()
 export class BotService {
@@ -27,18 +28,12 @@ export class BotService {
     this.bot.help(this.helpCommand);
   }
 
-  private startCommand = async (ctx: Context) =>  {
-    const tgUser = ctx.from;
-    const user = await this.userService.user({ telegramId: tgUser.id });
+  private startCommand = async (ctx: Context) => {
+    const tgUser: TgUserEntity = ctx.from;
 
-    if (!user) {
-      await this.userService.createUser({
-        telegramId: tgUser.id,
-        name: tgUser.first_name,
-        username: tgUser.username,
-        email: tgUser.username + '@telegram.com',
-      });
-    }
+
+    const user = await this.userService.findOrCreateUser(tgUser)
+
 
     return ctx.reply(
       'Привет! 👋 Добро пожаловать в нашего бота. Здесь ты можешь получать токеныб зарабатывать монеты и многое другое! Нажми на кнопку меню, чтобы узнать, что я могу. Если тебе нужна помощь, напиши /help.\n',
