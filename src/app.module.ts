@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BotModule } from './bot/bot.module';
@@ -12,6 +14,10 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot({
       isGlobal: true, // делает переменные окружения доступными глобально в приложении
       envFilePath: '.env', // указывает путь к файлу .env
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'frontend-build'), // Путь к сборке фронтенда
+      exclude: ['/api*'], // Исключаем API маршруты
     }),
     BotModule,
     AuthModule,

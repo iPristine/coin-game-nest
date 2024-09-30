@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 export class TelegramAuthQuery {
   @ApiProperty({
@@ -9,7 +9,6 @@ export class TelegramAuthQuery {
   })
   @IsString()
   hash: string;
-
   @ApiProperty({
     description: 'Additional data from Telegram',
     example: '123456',
@@ -17,7 +16,6 @@ export class TelegramAuthQuery {
   })
   @IsString()
   id: string;
-
   @ApiProperty({
     description: 'Additional data from Telegram',
     example: 'testuser',
@@ -34,7 +32,6 @@ export class TelegramAuthQuery {
   })
   @IsString()
   first_name: string;
-
   @ApiProperty({
     description: 'Additional data from Telegram',
     example: 'User',
@@ -52,7 +49,6 @@ export class TelegramAuthQuery {
   @IsOptional()
   @IsString()
   photo_url?: string;
-
   @ApiProperty({
     description: 'Additional data from Telegram',
     example: '1621341234',

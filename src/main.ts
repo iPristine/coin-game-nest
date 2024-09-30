@@ -14,6 +14,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  app.enableCors({
+    origin: 'https://4b01-149-50-236-135.ngrok-free.app', // Указывает, с каких источников разрешены запросы
+    methods: 'GET,POST,PUT,DELETE', // Указывает, какие методы разрешены
+    allowedHeaders: 'Content-Type, Accept', // Указывает, какие заголовки разрешены
+    credentials: true, // Указывает, разрешено ли отправлять учетные данные (например, куки)
+  });
 
   await app.listen(3000);
 }
