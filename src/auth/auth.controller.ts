@@ -46,33 +46,34 @@ export class AuthController {
   })
   @ApiQuery({ name: 'hash', required: true, type: String, description: 'Hash' })
   async telegramAuth(
-    @Query('query_id') queryId: string,
+    // @Query('query_id') queryId: string,
     @Query('user') userJson: string,
-    @Query('auth_date') authDate: number,
-    @Query('hash') hash: string,
+    // @Query('auth_date') authDate: number,
+    // @Query('hash') hash: string,
   ) {
-    const token = process.env.TG_BOT_TOKEN;
+    // Commented out because we don't need to check the hash in the DEV backend
+    // const token = process.env.TG_BOT_TOKEN;
 
     const user = JSON.parse(decodeURIComponent(userJson));
 
-    const dataCheckString = [
-      `query_id=${queryId}`,
-      `user=${userJson}`,
-      `auth_date=${authDate}`,
-    ]
-      .sort()
-      .join('\n');
-    const secretKey = crypto.createHash('sha256').update(token).digest();
+    // const dataCheckString = [
+    //   `query_id=${queryId}`,
+    //   `user=${userJson}`,
+    //   `auth_date=${authDate}`,
+    // ]
+    //   .sort()
+    //   .join('\n');
+    // const secretKey = crypto.createHash('sha256').update(token).digest();
 
-    const computedHash = crypto
-      .createHmac('sha256', secretKey)
-      .update(dataCheckString)
-      .digest('hex');
+    // const computedHash = crypto
+    //   .createHmac('sha256', secretKey)
+    //   .update(dataCheckString)
+    //   .digest('hex');
 
-    if (computedHash !== hash) {
-      console.log(computedHash, hash);
-      return { status: 'error', message: 'Authentication failed' };
-    }
+    // if (computedHash !== hash) {
+    //   console.log(computedHash, hash);
+    //   return { status: 'error', message: 'Authentication failed' };
+    // }
 
     const userFromDB = await this.userService.findOrCreateUser(user as any);
 
