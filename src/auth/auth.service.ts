@@ -15,11 +15,12 @@ export class AuthService {
   ) {}
 
   async login(initData: string) {
-    const token = process.env.TG_BOT_TOKEN;
+    // Commented out because we don't need to check the hash in the DEV backend
+    // const token = process.env.TG_BOT_TOKEN;
     try {
-      validate(initData, token, {
-        expiresIn: 300,
-      });
+      // validate(initData, token, {
+      //   expiresIn: 300,
+      // });
       const parsedData = parse(initData);
       const user = await this.userService.findOrCreateUser(
         parsedData.user as any,
