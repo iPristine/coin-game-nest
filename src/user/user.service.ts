@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { User, Prisma } from '@prisma/client';
-import { TgUserEntity } from "../auth/tg-user.entity";
+import { User as TgUser } from '@telegram-apps/init-data-node';
 
 @Injectable()
 export class UserService {
@@ -15,7 +15,7 @@ export class UserService {
     });
   }
 
-  async findUserById(id: number): Promise<User> {
+  async findUserById(id: string): Promise<User> {
     return this.prisma.user.findUnique({
       where: { id },
     });
@@ -61,7 +61,7 @@ export class UserService {
     });
   }
 
-  async findOrCreateUser(data: TgUserEntity): Promise<User> {
+  async findOrCreateUser(data: TgUser): Promise<User> {
     let user = await this.prisma.user.findUnique({
       where: { telegramId: data.id },
     });
@@ -72,9 +72,9 @@ export class UserService {
         data: {
           telegramId: data.id,
           username: data.username,
-          firstName: data.first_name,
-          lastName: data.last_name,
-          photoUrl: data.photo_url,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          photoUrl: data.photoUrl,
         },
       });
     }

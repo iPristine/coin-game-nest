@@ -4,6 +4,7 @@ import { JwtPayload } from './jwt.payload';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { parse, validate } from '@telegram-apps/init-data-node';
+import { TgUserEntity } from './tg-user.entity';
 
 @Injectable()
 export class AuthService {
@@ -22,11 +23,13 @@ export class AuthService {
       //   expiresIn: 300,
       // });
       const parsedData = parse(initData);
-      const user = await this.userService.findOrCreateUser(
-        parsedData.user as any,
-      );
+      const user = await this.userService.findOrCreateUser(parsedData.user);
 
-      const payload = { id: user.id };
+      const payload: JwtPayload = {
+        id: user.id,
+        username: user.username,
+        telegramId: parsedData.user.id,
+      };
 
       return {
         user,
@@ -44,6 +47,7 @@ export class AuthService {
   }
 
   async validateUserByJwtPayload(payload: JwtPayload) {
+    console.log('VALIDATE:', payload);
     return this.userService.findUserById(payload.id);
   }
 
