@@ -8,6 +8,9 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { SlotMachineModule } from './slot-machine/slot-machine.module';
+import { TicketModule } from './ticket/ticket.module';
+import { UpgradeModule } from './upgrade/upgrade.module';
 
 @Module({
   imports: [
@@ -21,7 +24,10 @@ import { UserModule } from './user/user.module';
     }),
     BotModule,
     AuthModule,
+    UpgradeModule,
     UserModule,
+    SlotMachineModule,
+    TicketModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

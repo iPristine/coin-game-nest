@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Context, Markup, Telegraf } from 'telegraf';
 import { UserService } from '../user/user.service';
-import { TgUserEntity } from "../auth/tg-user.entity";
+import { User as TgUser } from '@telegram-apps/init-data-node';
+
 
 @Injectable()
 export class BotService {
@@ -29,10 +30,7 @@ export class BotService {
   }
 
   private startCommand = async (ctx: Context) => {
-    const tgUser: TgUserEntity = ctx.from;
 
-
-    const user = await this.userService.findOrCreateUser(tgUser)
 
 
     return ctx.reply(
@@ -44,7 +42,6 @@ export class BotService {
   }
 
   private helpCommand(ctx: Context) {
-    const user = ctx.from;
 
     ctx.reply(
       'Вот что я могу делать для тебя:\n' +

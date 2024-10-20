@@ -14,10 +14,35 @@ datasource db {
 }
 
 model User {
-  id          Int    @id @default(autoincrement())
-  telegramId  Int @unique
+  id          String @id @default(uuid())
+  telegramId  Int    @unique
   username    String
   firstName   String?
   lastName    String?
   photoUrl    String?
+  tickets     Int    @default(0) // Добавлено поле для билетиков
+  coins       Int    @default(0) // Добавлено поле для монет
+  lastTicketClaim DateTime?
+  userUpgrades UserUpgrade[]
+}
+
+model Upgrade {
+  id          String        @id @default(uuid())
+  name        String        @unique
+  description String
+  baseCost    Int
+  costMultiplier Float
+  effect      Json
+  userUpgrades UserUpgrade[]
+}
+
+model UserUpgrade {
+  id        String   @id @default(uuid())
+  userId    String
+  upgradeId String
+  level     Int      @default(0)
+  user      User     @relation(fields: [userId], references: [id])
+  upgrade   Upgrade  @relation(fields: [upgradeId], references: [id])
+
+  @@unique([userId, upgradeId])
 }

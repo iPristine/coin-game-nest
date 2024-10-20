@@ -10,13 +10,14 @@ async function bootstrap() {
     .setTitle('Coin Game API')
     .setDescription('The Coin Game API description')
     .setVersion('1.0')
+    .addBearerAuth() // Добавление поддержки Bearer токенов
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
   app.enableCors({
-    origin: 'https://4b01-149-50-236-135.ngrok-free.app', // Указывает, с каких источников разрешены запросы
+    origin: '*, localhost:3000', // Указывает, с каких источников разрешены запросы
     methods: 'GET,POST,PUT,DELETE', // Указывает, какие методы разрешены
     allowedHeaders: 'Content-Type, Accept', // Указывает, какие заголовки разрешены
     credentials: true, // Указывает, разрешено ли отправлять учетные данные (например, куки)
