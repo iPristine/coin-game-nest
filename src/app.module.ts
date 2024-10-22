@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { SlotMachineModule } from './slot-machine/slot-machine.module';
 import { TicketModule } from './ticket/ticket.module';
 import { UpgradeModule } from './upgrade/upgrade.module';
+import { BoostModule } from './boost/boost.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UpgradeModule } from './upgrade/upgrade.module';
     UserModule,
     SlotMachineModule,
     TicketModule,
+    BoostModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

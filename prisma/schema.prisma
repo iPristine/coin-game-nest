@@ -24,6 +24,7 @@ model User {
   coins       Int    @default(0) // Добавлено поле для монет
   lastTicketClaim DateTime?
   userUpgrades UserUpgrade[]
+  userBoosts   UserBoost[]
 }
 
 model Upgrade {
@@ -45,4 +46,38 @@ model UserUpgrade {
   upgrade   Upgrade  @relation(fields: [upgradeId], references: [id])
 
   @@unique([userId, upgradeId])
+}
+
+enum BoostType {
+  INSTANT
+  DELAYED
+}
+
+model Boost {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  nameLabel   String
+  description String
+  reward      Int
+  type        BoostType   @default(INSTANT)
+  userBoosts  UserBoost[]
+}
+
+enum UserBoostStatus {
+  AVAILABLE
+  IN_PROGRESS
+  COMPLETED
+}
+
+model UserBoost {
+  id        String   @id @default(uuid())
+  userId    String
+  boostId   String
+  status    UserBoostStatus   @default(AVAILABLE)
+  activatedAt   DateTime?
+  expiresAt     DateTime?
+  user      User     @relation(fields: [userId], references: [id])
+  boost     Boost    @relation(fields: [boostId], references: [id])
+
+  @@unique([userId, boostId])
 }
