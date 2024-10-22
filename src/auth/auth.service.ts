@@ -4,7 +4,6 @@ import { JwtPayload } from './jwt.payload';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { parse, validate } from '@telegram-apps/init-data-node';
-import { TgUserEntity } from './tg-user.entity';
 
 @Injectable()
 export class AuthService {
